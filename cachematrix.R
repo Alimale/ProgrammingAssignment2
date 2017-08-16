@@ -1,15 +1,24 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix<-function(x=matrix()) {
+  s<-NULL
+  dim(x)<-c(sqrt(length(x)),sqrt(length(x)))
+  set<-function(y){
+    dim(y)<-c(sqrt(length(y)),sqrt(length(y)))
+    x<<-y
+    s<<-NULL
+  }
+  get<-function() x
+  sets<-function(inverse) s<<-inverse
+  gets<-function() s
+  list(set=set, get=get, sets=sets, gets=gets)
 }
-
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheSolve<-function(x,...){
+  s<-x$gets
+  if(!is.null(s)) {
+    message("getting chached data")
+    return(s)
+  }
+  data<-x$get()
+  s<-solve(data, ...)
+  x$sets(s)
+  s
 }
